@@ -1,0 +1,20 @@
+[package]
+name = "tacos"
+version = "0.1.0"
+edition = "2024"
+authors = ["Jamaro Mooibroek <j.mooibroek2002@gmail.com>"]
+
+[dependencies]
+bootloader = "0.9"
+volatile = "0.2.6"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[[bin]]
+name = "tacos"
+test = false
+bench = false
