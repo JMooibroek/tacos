@@ -5,18 +5,33 @@ edition = "2024"
 authors = ["Jamaro Mooibroek <j.mooibroek2002@gmail.com>"]
 
 [dependencies]
+x86_64 = "0.15.5"
 bootloader = "0.9"
+uart_16550 = "0.6.0"
 volatile = "0.2.6"
 spin = "0.5.2"
 lazy_static = { version = "1.0", features = ["spin_no_std"] }
+# ash = { version = "0.38.0", default-features = false }
 
 [profile.dev]
 panic = "abort"
+
+[profile.test]
+panic = "unwind"
 
 [profile.release]
 panic = "abort"
 
 [[bin]]
 name = "tacos"
-test = false
+test = true
 bench = false
+
+[[test]]
+name = "should_panic"
+harness = false
+
+[package.metadata.bootimage]
+test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio", "-display", "none"] # Allows to exit Qemu, allows serial comms, displays none when running test
+test-success-exit-code = 33         # (0x10 << 1) | 1
+# test-timeout = 300
